@@ -1,4 +1,4 @@
-const { getAllDogs, getDogsByName } = require("../controllers/dogs_controller");
+const { getAllDogs, getDogsByName, createDog } = require("../controllers/dogs_controller");
 const Dog = require("../models/Dog");
 
 // const getDogRouterHandler = (req, res) => {
@@ -59,7 +59,7 @@ const Dog = require("../models/Dog");
 
 const getDogs = async (req, res) => {
  try {
-    const name = req.query.name;
+    const {name} = req.query;
     if (name) {
        const dogsName = await getDogsByName(name);
        res.status(200).json(dogsName);
@@ -110,11 +110,10 @@ const getDogsById = async (req, res) => {
 
 
 const postDogs =  async (req, res) => {
-    res.send("NIY: ESTA RUTA CREA UN NUEVO USUARIO")
     try {
-        const { name, email, phone } = req.body;
-        const newUser = await  createUser (name, email, phone);
-        res.status(201).json(newUser);
+        const { image, name, heigth, weigth, life_span } = req.body;
+        const newDog = await  createDog (image, name, heigth, weigth, life_span);
+        res.status(201).json(newDog);
         
     } catch (error) {
         res.status(400).json({error: error.message});

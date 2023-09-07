@@ -1,6 +1,6 @@
 const axios = require ('axios');
 
-const { Dog } = require("../models/Dog");
+const { Dog } = require("../db");
 
 
 
@@ -13,15 +13,23 @@ const getAllDogs = async () => {
 const getDogsByName = async (name) => {
     const allDogs = await getAllDogs();
 
-    const breedsByName = await allDogs.filter((breed)=>{
-        return breed.name.toLowerCase().incluides(name.toLowerCase());
-    });
+    const breedsByName = allDogs.filter ( breed=> 
+      breed.name.toLowerCase().includes(name.toLowerCase()));
+        // return breed.name.toLowerCase() === name.toLowerCase();
+    
 
     if (!breedsByName.length) throw new Error (` The ${name} breed does not exist`);
 
     return breedsByName;
 
 };
+
+const createDog = async (image, name, heigth, weigth, life_span) => {
+ const newDog = await Dog.create({image, name, heigth, weigth, life_span})
+ return newDog;
+}
+
+
 
 
 
@@ -43,4 +51,4 @@ const getDogsByName = async (name) => {
 //     await 
 // }
 
-module.exports = {getAllDogs, getDogsByName, getDogsByName};
+module.exports = {getAllDogs, getDogsByName, getDogsByName, createDog};

@@ -7,6 +7,7 @@ const {
     
     getDogs,
     getDogsById,
+    postDogs,
  } = require("../handlers/dogHandler");
 
 
@@ -20,7 +21,7 @@ dogRouter.get("/:id", getDogsById); // el 'id' crea dentro del objeto params(es 
 
 // dogRouter.get("/"),                                        
 
-dogRouter.post("/dog",  );
+dogRouter.post("/dog", postDogs );
 
 
 

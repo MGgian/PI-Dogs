@@ -29,15 +29,15 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     height: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT,  //float acepta numeros decimales 
       allowNull: true,
     },
     weight: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     life_span: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,  
       allowNull: true,
     },
     // Otras propiedades que pueda tener el modelo Dog
