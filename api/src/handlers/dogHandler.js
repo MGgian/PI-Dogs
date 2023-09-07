@@ -1,4 +1,4 @@
-const { getAllDogs } = require("../controllers/dogs_controller");
+const { getAllDogs, getDogsByName } = require("../controllers/dogs_controller");
 const Dog = require("../models/Dog");
 
 // const getDogRouterHandler = (req, res) => {
@@ -9,22 +9,30 @@ const Dog = require("../models/Dog");
 //     // });
 
 // };
-const getDogRouterHandler = async (req, res) => {
-    const {id} = req.params;
-    if(isNaN(id)) {
-        console.log("Tendria que buscar en la BDD");
-    } else{
-        console.log("Tendria que buscar en la api")
-    }
 
-    try {
-        const user = await getDogRouterHandler(id);
-        res.status(200).json("OK");
+
+
+
+
+
+
+// const getDogRouterHandler = async (req, res) => {
+//     const {id} = req.params;
+//     // if(isNaN(id)) {
+//     //     console.log("Tendria que buscar en la BDD");
+//     // } else{
+//     //     console.log("Tendria que buscar en la api")
+//     // }
+//     const source = isNaN(id) ? "bdd" : "api";
+
+//     try {
+//         const user = await getDogRouterHandler(id, source);
+//         res.status(200).json("OK");
         
-    } catch (error) {
-        res.status(400).json({error: error.message});
-    }
-};
+//     } catch (error) {
+//         res.status(400).json({error: error.message});
+//     }
+// };
 
 // const getDogsRouterHandler = async (req, res) => {
 //     const {raza} = req.query; //o por query?
@@ -49,10 +57,59 @@ const getDogRouterHandler = async (req, res) => {
 // };
 
 
+const getDogs = async (req, res) => {
+ try {
+    const name = req.query.name;
+    if (name) {
+       const dogsName = await getDogsByName(name);
+       res.status(200).json(dogsName);
+    } else {
+       const allDogs = await getAllDogs();
+       res.status(200).json(allDogs);
+    }
+ }catch (error) {
+   let status;
+   if(error.message.startsWith("There")) {
+        status = 404;
+        res.status(status).json({error: error.message});
+    } else {
+       status = 500
+       res.status(status).json({error: error.message});
+    }
+}
+};
+
+const getDogsById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if(id) {
+            const dog = await getAllDogs.getDogsById(id);
+            if (!dog.length)
+            return res.status(404).json({ error: `ID dog not found, ID = ${id}`});
+            return res.status(200).json(dog);
+
+        }else {
+            return res.status(400).json({error:"missing id"});
+        }
+    }catch (error) {
+        res.status(500).json({ error: error.message});
+    
+    }
+};
+// const getBreedsFilteredByTemp = async (req, res) => {
+//     try {
+//         const {temperament} = req.query
+//         const dogs = await getAllDogs.getBreedsFilteredByTemp(temperament);
+//         res.status(200).json(dogs);
+//     }catch(error) {
+//         res.status(500).json({error: error.message});
 
 
+//     }
+// }
 
-const postDogCreateRouterHandler =  async (req, res) => {
+
+const postDogs =  async (req, res) => {
     res.send("NIY: ESTA RUTA CREA UN NUEVO USUARIO")
     try {
         const { name, email, phone } = req.body;
@@ -67,8 +124,11 @@ const postDogCreateRouterHandler =  async (req, res) => {
 
 
 module.exports = {
-    getDogRouterHandler,
-    getDogsRouterHandler,
-    postDogCreateRouterHandler,
+    getDogs,
+    getDogsById,
+    // getBreedsFilteredByTemp,
+    postDogs,
+    
+    
 
-};
+}; 
