@@ -1,11 +1,21 @@
-import './App.css';
+import { Home, Landing, Detail, Form } from "./views"
+import { Route } from "react-router-dom"
+import Navbar from "./components/NavBar/NavBar";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function App() {
-  return (
+  const location = useLocation();
+  
+  return ( 
     <div className="App">
-      <h1>Henry Dogs</h1>
+      {location.pathname !== "/" && <Navbar/>}
+      <Route exact path="/" component={Landing}/>  
+      <Route exact path="/detail" component={Detail}/>  
+      <Route exact path="/create" component={Form}/>  
+      <Route path="/home" render={() => <Home/>}/>
+      
     </div>
   );
-}
+};
 
-export default App;
+export default App; 
