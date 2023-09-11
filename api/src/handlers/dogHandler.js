@@ -14,14 +14,15 @@ const getDogs = async (req, res) => {
        res.status(200).json(allDogs);
     }
  }catch (error) {
-   let status;
-   if(error.message.startsWith("There")) {
-        status = 404;
-        res.status(status).json({error: error.message});
-    } else {
-       status = 500
-       res.status(status).json({error: error.message});
-    }
+    res.status(404).json({ error: error.message })
+//    let status;
+//    if(error.message.startsWith("There")) {
+//         status = 404;
+//         res.status(status).json({error: error.message});
+//     } else {
+//        status = 500
+//        res.status(status).json({error: "ERROR"});
+//     }
 }
 };
 
